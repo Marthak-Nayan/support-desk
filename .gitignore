@@ -1,0 +1,33 @@
+########################
+# React Frontend
+########################
+support-desk-frontend/node_modules/
+support-desk-frontend/build/
+support-desk-frontend/.env
+support-desk-frontend/.env.local
+
+########################
+# Spring Boot Backend
+########################
+support-desk-backend/target/
+support-desk-backend/.classpath
+support-desk-backend/.project
+support-desk-backend/.settings/
+
+########################
+# Logs
+########################
+*.log
+
+########################
+# OS / IDE
+########################
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+########################
+# Maven
+########################
+.mvn/wrapper/maven-wrapper.jar

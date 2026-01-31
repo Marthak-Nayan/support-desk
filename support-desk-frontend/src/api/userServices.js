@@ -1,0 +1,41 @@
+import { authHeader, myAxios } from "./helper";
+
+export const getAllTickets = async (pageNumber) => {
+    try {
+        const response = await myAxios.get(`/tickets/getTickets?page=${pageNumber}`, authHeader());
+        return response.data;
+    } catch (error) {
+        const message = error?.response?.data?.message || "Failed to fetch tickets.";
+        throw new Error(message);
+    }
+};
+
+export const updateTicket = async (ticketId, updatedData) => {
+    try {
+        const response = await myAxios.put(`/admin/updateTicket/${ticketId}`, updatedData, authHeader());
+        return response.data;
+    } catch (error) {
+        const message = error?.response?.data?.message || "Failed to update ticket.";
+        throw new Error(message);
+    }
+};
+
+export const getTicketMatrix = async () => {
+    try {
+        const response = await myAxios.get("/tickets/getTicketMatrix", authHeader());
+        return response.data;
+    } catch (error) {
+        const message = error?.response?.data?.message || "Failed to fetch ticket matrix.";
+        throw new Error(message);
+    }
+};
+
+export const updateTicketByUser = async (ticketId, updatedData) => {
+    try {
+        const response = await myAxios.put(`/user/updateTicket/${ticketId}`, updatedData, authHeader());
+        return response.data;
+    } catch (error) {
+        const message = error?.response?.data?.message || "Failed to update ticket.";
+        throw new Error(message);
+    }
+};

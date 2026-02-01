@@ -6,6 +6,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -25,7 +27,7 @@ import java.io.IOException;
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final AuthUtils authUtils;
-    private final UserRepositary userRepositary;
+    private final CoutomUserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -34,31 +36,40 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
         log.info("Incoming Request: {}",path);
 
-        if (path.startsWith("/api/auth/")) {
+        String jwtToken = null;
+        Cookie[] cookies = request.getCookies();
+
+        if(cookies != null){
+            for(Cookie cookie : cookies){
+                if("access_token".equals(cookie.getName())){
+                    jwtToken = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        if (jwtToken == null) {
             filterChain.doFilter(request, response);
             return;
         }
 
         try {
-            String authHeader = request.getHeader("Authorization");
 
-            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-                throw new BadCredentialsException("JWT token is missing");
-            }
+            final String username = authUtils.getUsernameFromToken(jwtToken);
 
-            String token = authHeader.substring(7);
-
-            String username = authUtils.getUsernameFromToken(token);
-
-            User user = userRepositary.findByUsername(username)
-                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
             if (SecurityContextHolder.getContext().getAuthentication() == null) {
                 UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
 
+        }
+        catch (IllegalArgumentException ex){
+            log.warn("missing: {}", ex.getMessage());
+            sendUnauthorized(response, "UNAUTHORIZED", ex.getMessage());
+            return;
         }
         catch (BadCredentialsException ex) {
             log.warn("JWT missing: {}", ex.getMessage());

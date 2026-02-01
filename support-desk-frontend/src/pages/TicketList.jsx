@@ -169,7 +169,7 @@ export default function TicketList() {
                                 <th className="border p-2">Status</th>
                                 <th className="border p-2">Priority</th>
                                 <th className="border p-2">Owner</th>
-                                <th className="border p-2">Action</th>
+                                {isAdmin() && <th className="border p-2">Action</th>}
                             </tr>
                         </thead>
                         <tbody>
@@ -180,7 +180,7 @@ export default function TicketList() {
                                     <td className="border p-2">{ticket.status}</td>
                                     <td className="border p-2">{ticket.priority}</td>
                                     <td className="border p-2">{ticket.createdBy?.username || "N/A"}</td>
-                                    <td className="border p-2">
+                                    {/*<td className="border p-2">
                                         {(isAdmin() || ticket.status === "OPEN" || ticket.status === "IN_PROGRESS") ? (
                                             <button
                                                 onClick={() => {
@@ -194,7 +194,21 @@ export default function TicketList() {
                                         ) : (
                                             <span className="text-gray-400">Not allowed</span>
                                         )}
+                                    </td>*/}
+                                    {isAdmin() && (
+                                    <td className="border p-2">
+                                        
+                                            <button
+                                                onClick={() => {
+                                                    setEditingTicket({ ...ticket, status: ticket.status ?? "OPEN" });
+                                                    setIsModalOpen(true);
+                                                }}
+                                                className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700"
+                                            >
+                                                Edit
+                                            </button>
                                     </td>
+                                    )}
                                 </tr>
                             ))}
                         </tbody>

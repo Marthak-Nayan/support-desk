@@ -3,6 +3,7 @@ import axios from "axios";
 
 export const BASE_URL = "http://localhost:8080/api";
 
+
 export const myAxios = axios.create({
   baseURL: BASE_URL,
 });
@@ -22,12 +23,13 @@ myAxios.interceptors.response.use(
         const errMsg = error.response?.data?.message;
 
         if (
+            errMsg === "Please login first" ||
+            errMsg === "Authentication failed" ||
             errMsg === "Invalid or expired JWT token" ||
             errMsg === "You are not authorized to access this resource" ||
             errMsg === "JWT token is missing" ||
             errMsg === "JWT token has expired"
-        ){
-        localStorage.removeItem("token"); 
+        ){ 
         localStorage.removeItem("role");
         window.location.href = "/login";
       }

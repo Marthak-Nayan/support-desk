@@ -8,6 +8,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -33,13 +36,11 @@ public class LoginServices {
 
         String token = authUtils.generateAccessToken(user);
 
-        LoginResponseDTO response = LoginResponseDTO.builder()
+        return LoginResponseDTO.builder()
                 .userId(user.getId())
                 .accessToken(token)
                 .message("Login Successfully")
                 .role(user.getRole().name())
                 .build();
-
-        return response;
     }
 }

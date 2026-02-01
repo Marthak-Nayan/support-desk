@@ -16,28 +16,6 @@ import java.time.LocalDateTime;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-//    @ExceptionHandler(UsernameNotFoundException.class)
-//    public ResponseEntity<ApiError> handleUsernameNotFoundException(UsernameNotFoundException ex) {
-//        ApiError apiError = ApiError.builder()
-//                .statusCode( HttpStatus.NOT_FOUND)
-//                .message("Username not found with username")
-//                .error(ex.getMessage())
-//                .build();
-//        return new ResponseEntity<>(apiError, apiError.getStatusCode());
-//    }
-//
-//    @ExceptionHandler(BadCredentialsException.class)
-//    public ResponseEntity<ApiError> handleBadCredentials(
-//            BadCredentialsException ex) {
-//
-//        ApiError apiError = ApiError.builder()
-//                .statusCode(HttpStatus.UNAUTHORIZED)
-//                .error(ex.getMessage())
-//                .message("Invalid username or password")
-//                .build();
-//        return new ResponseEntity<>(apiError,HttpStatus.UNAUTHORIZED);
-//    }
-
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ApiError> handleAuthenticationException(AuthenticationException ex) {
         ApiError apiError = ApiError.builder()
@@ -59,12 +37,6 @@ public class GlobalExceptionHandler {
                 .build();
         return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
     }
-
-//    @ExceptionHandler(AccessDeniedException.class)
-//    public ResponseEntity<ApiError> handleAccessDeniedException(AccessDeniedException ex) {
-//        ApiError apiError = new ApiError("Access denied: Insufficient permissions", HttpStatus.FORBIDDEN);
-//        return new ResponseEntity<>(apiError, HttpStatus.FORBIDDEN);
-//    }
 
 
     @ExceptionHandler(EmailAlreadyExistsException.class)

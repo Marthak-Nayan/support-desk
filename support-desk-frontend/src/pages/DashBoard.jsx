@@ -1,19 +1,19 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CreateTicketForm from "./CreateTicketForm";
-import { DASHBOARD_VIEW, ROLES } from "../constants/appConstants";
+import { DASHBOARD_VIEW } from "../constants/appConstants";
 import TicketList from "./TicketList";
 import WelcomeCard from "../components/Welcome";
 import MetricCard from "../components/MetricCard ";
 import SideBar from "../components/SideBar";
 import { getTicketMatrix } from "../api/userServices";
+import { logoutUser } from "../api/authServices";
 
 
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const role = localStorage.getItem("role");
-  const token = localStorage.getItem("token");
   const [loading, setLoading] = useState(false);
 
 
@@ -38,15 +38,11 @@ export default function Dashboard() {
   }, []);
 
   useEffect(() => {
-    if (!token) {
-      navigate("/login");
-      return;
-    }
     loadMatrix();
-  }, [token, role, navigate]);
+  }, []);
 
   const logoutAction = () => {
-    localStorage.removeItem("token");
+    logoutUser();
     localStorage.removeItem("role");
     navigate("/login");
   };

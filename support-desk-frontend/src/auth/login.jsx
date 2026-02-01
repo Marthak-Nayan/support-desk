@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { loginUser } from '../api/authServices';
+import { toast } from 'react-toastify';
 
 
 const Login = () => {
@@ -9,7 +10,14 @@ const Login = () => {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  
+
+  useEffect(() => {
+      const role = localStorage.getItem("role");
+      if (role) {
+        navigate("/dashboard");
+      }
+    }, [navigate]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -27,10 +35,15 @@ const Login = () => {
     try {
       setLoading(true);
       setError("");
+
+        const role = localStorage.getItem("role");
+        if (role) {
+          toast.success("Already logged in");
+          navigate("/dashboard");
+        }
       
       const data = await loginUser(userData);
-      localStorage.setItem("token", data.accessToken);
-      localStorage.setItem("role", data.role);
+      localStorage.setItem("role", data?.role);
       navigate("/dashboard");
     } catch (err) {
       const message =

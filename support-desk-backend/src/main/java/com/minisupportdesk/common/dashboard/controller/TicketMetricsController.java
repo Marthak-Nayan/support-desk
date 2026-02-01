@@ -1,7 +1,7 @@
-package com.minisupportdesk.common.controller;
+package com.minisupportdesk.common.dashboard.controller;
 
-import com.minisupportdesk.common.DTO.TicketMetricsRespDTO;
-import com.minisupportdesk.common.services.TicketMetricsServices;
+import com.minisupportdesk.common.dashboard.DTO.TicketMetricsRespDTO;
+import com.minisupportdesk.common.dashboard.service.TicketMetricsServices;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;

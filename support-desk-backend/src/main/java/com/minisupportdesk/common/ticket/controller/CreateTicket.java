@@ -1,8 +1,8 @@
-package com.minisupportdesk.common.controller;
+package com.minisupportdesk.common.ticket.controller;
 
-import com.minisupportdesk.common.DTO.CreateTicketReqDTO;
-import com.minisupportdesk.common.DTO.CreateTicketRespDTO;
-import com.minisupportdesk.common.services.CreateTicketService;
+import com.minisupportdesk.common.ticket.DTO.CreateTicketReqDTO;
+import com.minisupportdesk.common.ticket.DTO.CreateTicketRespDTO;
+import com.minisupportdesk.common.ticket.service.CreateTicketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

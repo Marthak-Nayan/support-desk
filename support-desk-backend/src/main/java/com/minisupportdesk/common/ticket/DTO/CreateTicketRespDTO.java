@@ -1,4 +1,4 @@
-package com.minisupportdesk.common.DTO;
+package com.minisupportdesk.common.ticket.DTO;
 
 import lombok.*;
 

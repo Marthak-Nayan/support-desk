@@ -1,8 +1,15 @@
 import { authHeader, myAxios } from "./helper";
 
-export const getAllTickets = async (pageNumber) => {
+export const getAllTickets = async (pageNumber, filters = {}) => {
     try {
-        const response = await myAxios.get(`/tickets/getTickets?page=${pageNumber}`, authHeader());
+        const response = await myAxios.get(`/tickets/getTickets`,{
+            params: {
+                page: pageNumber,
+                size: 10,
+                ...filters
+            },
+            ...authHeader()
+        });
         return response.data;
     } catch (error) {
         const message = error?.response?.data?.message || "Failed to fetch tickets.";
